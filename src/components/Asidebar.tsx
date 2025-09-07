@@ -19,7 +19,7 @@ export default function Asidebar() {
     //        </ul>
     //      </nav>
     //    </aside>
-        <aside className="w-72 bg-[#1b1b1f] text-white p-6 flex flex-col shadow-lg rounded-r-2xl">
+        <aside className="w-72 bg-[#1b1b1f] text-white p-6 flex flex-col shadow-lg rounded-r-2xl ">
         <h2 className="text-2xl font-bold mb-10">finance</h2>
         <nav>
           <ul className="space-y-6">

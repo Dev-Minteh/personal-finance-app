@@ -201,31 +201,37 @@
 // import React from "react";
 // import { Home, List, PieChart, Wallet, Repeat } from "lucide-react";
 import React from "react";
-import { PieChart as RePieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart as RePieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
 import data from "./data/data.json";
 import Asidebar from "./components/Asidebar";
 
 export default function App() {
 
   
-  const budgets = [
-    { category: "Entertainment", value: 50, color: "#3b82f6" },
-    { category: "Bills", value: 750, color: "#10b981" },
-    { category: "Personal Care", value: 100, color: "#f97316" },
-    { category: "Dining Out", value: 75, color: "#6366f1" },
-  ];
+  // const budgets = [
+  //   { category: "Entertainment", value: 50, color: "#277c78" },
+  //   { category: "Bills", value: 750, color: "#10b981" },
+  //   { category: "Personal Care", value: 100, color: "#f97316" },
+  //   { category: "Dining Out", value: 75, color: "#6366f1" },
+  // ];
   
-  const totalBudget = budgets.reduce((acc, b) => acc + b.value, 0);
+  // const totalBudget = budgets.reduce((acc, b) => acc + b.value, 0);
+  const chartBudgets = data.budgets.map((b, idx) => ({
+    category: b.category,
+    value: b.maximum,
+    color: [ "#277c78","#82c9d7", "#f2cdac","#696868"][idx % 4 ]
+  }))
 
+  const totalBudget = chartBudgets.reduce((acc, b) => acc + b.value, 0);
   return (
-    <div className="flex min-h-screen bg-gray-100 font-sans">
+    <div className="flex min-h-screen  bg-gray-100 font-sans h-[1064px]">
       <Asidebar />
       {/* Main content */}
       <main className="flex-1 p-8">
         <h2 className="text-2xl font-bold mb-6">Overview</h2>
 
         {/* Overview Row (full width) */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-6 mb- w-[1060px] h-[119px]">
           <div className="bg-gray-900 text-white p-6 rounded-2xl shadow">
             <p className="text-sm text-gray-400">Current Balance</p>
             <p className="text-2xl font-bold mt-2">{data.balance.current.toLocaleString()}</p>
@@ -241,36 +247,36 @@ export default function App() {
         </div>
 
         {/* Second Row: 2 Columns */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 mt-5 gap-50 h-[761px] w-[1060px]">
           {/* Left Column */}
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-2xl shadow">
+          <div className="space-y-6 ">
+            <div className="bg-white p-6 rounded-2xl shadow w-[608px] h-[218px]">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-semibold">Pots</h3>
                 <div>
                  <a href="#" className="text-sm text-gray-500">
                   See Details
                 </a>
-                <img src="public\images\icon-caret-right.svg" alt="arrow-right-icon" className="inline ml-1" />
+                <img src="images\icon-caret-right.svg" alt="arrow-right-icon" className="inline ml-1" />
                 </div>
               </div>
-              <div className="flex gap-6 overflow-x-auto  items-center">
-                <div className="">
-                <div className='flex gap-2 items-center p-4 rounded-lg bg-gray-100 '>
+              <div className="flex items-center gap-4 w-[544px] h-[110px]">
+                {/* <div className=""> */}
+                <div className='flex gap-4 items-center p-4 rounded-lg bg-gray-100 w-[247px] h-[110px]'>
                 <img src="images\icon-nav-pots.svg" alt="pots-icon" className="" />
                 <div className="mr-10">
                   <p>Total Saved</p>
                   <p className='text-2xl font-bold'>$850</p>
                 </div>
               </div>
-                </div>              
-              <div className="grid grid-cols-2 gap-4 mt-4 text-sm text-gray-600">
+                {/* </div>               */}
+              <div className="grid grid-cols-2  text-sm text-gray-600 h-[110px] w-[211px]">
                 {
                   data.pots
                   .filter((pot) => pot.name !== "Holiday")
                   .map((pot) => (  
-                <div key={pot.name} className="flex items-center gap-2 p-2 ">
-                <div className={`divide-2 text-green-500 ${pot.theme} w-[4px] h-[43px]`}></div>
+                <div key={pot.name} className="flex items-center gap-2 ">
+                <span className={`border-2 ${pot.theme} w-[4px] h-[43px]`}></span>
                 <div>
                   <h3 className="text-[12px] font-semibold text-gray-600">{pot.name}</h3>
                   <p className="text-sm font-bold">{pot.total.toLocaleString()}</p>
@@ -284,7 +290,7 @@ export default function App() {
           </div>
 
             {/* Transactions */}
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-6 rounded-2xl shadow w-[608px]">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-semibold">Transactions</h3>
                 <div className="flex items-center gap-2 text-green-600 cursor-pointer">
@@ -330,49 +336,80 @@ export default function App() {
           {/* Right Column */}
           <div className="space-y-6">
             {/* Budgets */}
-            <section className="bg-white p-6 rounded-lg shadow">
-              <div className="flex justify-between items-center mb-4">
+            <section className="bg-white p-6 rounded-lg shadow w-[428px] h-[410px]">
+              <div className="flex justify-between  items-center mb-4">
                 <h2 className="text-xl font-semibold">Budgets</h2>
                 <div className="flex items-center gap-2 text-green-600 cursor-pointer">
                   <span className="text-sm">See details</span>
                   <img src="public\images\icon-caret-right.svg" alt="arrow-right-icon" className="" />
                 </div>
               </div>
-              <div className="flex flex-col items-center">
-                <div className="w-40 h-40 mb-6">
+              <div className="flex justify-between w-[364px] h-[302px] items-center mt-10">
+                <div className="w-[247px] h-[240px] ">
                   <ResponsiveContainer>
                     <RePieChart>
                       <Pie
-                        data={budgets}
+                        data={chartBudgets}
                         dataKey="value"
-                        innerRadius={50}
-                        outerRadius={70}
-                        paddingAngle={2}
+                        innerRadius={85}
+                        outerRadius={115}
+                        paddingAngle={0}
                       >
-                        {budgets.map((b, idx) => (
-                          <Cell key={idx} fill={b.color} />
+                        {chartBudgets.map((b, idx) => (
+                          <Cell key={idx} fill={b.color}  />
+                          
                         ))}
+                     
+                     <Label
+                      position="center"
+                      content={() => (
+                        <g>
+                          <text
+                            x="50%"
+                            y="48%"
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            fontSize="24"
+                            fontWeight="bold"
+                            fill="#111827"
+                          >
+                            ${chartBudgets.reduce((acc, b) => acc + b.value, 0)}  
+                          </text>
+                          <text
+                            x="50%"
+                            y="62%"
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            fontSize="12"
+                            fill="#6B7280"
+                          >
+                            of ${totalBudget} limit
+                          </text>
+                        </g>
+                      )}
+                    />
                       </Pie>
                     </RePieChart>
                   </ResponsiveContainer>
                 </div>
-                <p className="text-2xl font-bold">${338}</p>
-                <p className="text-sm text-gray-500 mb-4">of ${totalBudget} limit</p>
-                <ul className="space-y-2 w-full">
+                <ul className="space-y-2 ">
                   {data.budgets.map((b) => (
                     <li
                       key={b.category}
-                      className="flex justify-between text-sm text-gray-600"
+                      className="flex gap-2  text-sm text-gray-600"
                     >
+                     <span className={`border-2 ${b.theme} w-[4px] h-[43px]`}></span>
+                      <div className="flex flex-col ">
                       <span>{b.category}</span>
                       <span>${b.maximum}</span>
+                      </div>                      
                     </li>
                   ))}
                 </ul>
               </div>
             </section>
             {/* Recurring Bills */}
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-6 rounded-2xl shadow w-[428px] h-[327]">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-semibold">Recurring Bills</h3>
                 <a href="#" className="text-sm text-gray-500">
